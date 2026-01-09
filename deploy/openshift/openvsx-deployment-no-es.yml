@@ -163,10 +163,10 @@ objects:
             resources:
               requests:
                 cpu: 100m
-                memory: 512Mi
+                memory: 4Gi
               limits:
                 cpu: '1'
-                memory: 4Gi
+                memory: 6Gi
             env:
               - name: OVSX_REGISTRY_URL
                 value: http://openvsx-server:8080
@@ -181,7 +181,7 @@ objects:
         volumes:
         - name: extensions-storage
           persistentVolumeClaim:
-            claimName: extensions-pvc             
+            claimName: extensions-pvc
 - apiVersion: v1
   kind: Service
   metadata:
