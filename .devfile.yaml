@@ -16,6 +16,10 @@ components:
         - name: local
           path: /home/user/.local/
   - name: elasticsearch
+    attributes:
+      container-overrides:
+        securityContext:
+          runAsUser: 1000
     container:
       image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
       memoryRequest: 256Mi
@@ -244,7 +248,7 @@ commands:
       commandLine: |
           export CHECLUSTER_NAME="$(kubectl get checluster --all-namespaces -o json | jq -r '.items[0].metadata.name')" &&
           export CHECLUSTER_NAMESPACE="$(kubectl get checluster --all-namespaces -o json | jq -r '.items[0].metadata.namespace')" &&
-          export OPENVSX_ROUTE_URL="$(oc get route internal -n "$OPENVSX_NAMESPACE" -o jsonpath='{.spec.host}')" && 
+          export OPENVSX_ROUTE_URL="$(oc get route internal -n "$OPENVSX_NAMESPACE" -o jsonpath='{.spec.host}')" &&
           export PATCH='{"spec":{"components":{"pluginRegistry":{"openVSXURL":"https://'"$OPENVSX_ROUTE_URL"'"}}}}' &&
           kubectl patch checluster "${CHECLUSTER_NAME}" --type=merge --patch "${PATCH}" -n "${CHECLUSTER_NAMESPACE}"
 
